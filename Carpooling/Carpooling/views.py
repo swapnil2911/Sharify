@@ -1,7 +1,9 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 
 def HomePage(request):
-	return HttpResponse('<h1>This is the homepage</h1>')
+	context = {'title' : 'Home'}
+	return render(request,'Home.html',context)
 
 def UserHistory(request):
 	pass
@@ -13,4 +15,7 @@ def AvailableTravel(request):
 	pass
 
 def MakeTravel(request):
+	pass
+
+def UserLogin(request):
 	pass
