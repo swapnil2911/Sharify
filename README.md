@@ -1,1 +1,4 @@
 # Carpooling
+## Requirements
+`django`
+`mysqlclient`
