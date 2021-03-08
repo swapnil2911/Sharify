@@ -4,18 +4,22 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
+from django.contrib.admin.widgets import AdminDateWidget
 
 from .models import User
 
 class CustUserCreationForm(forms.ModelForm):
 
-	password1 = forms.CharField(label = 'Password', widget = forms.PasswordInput)
-	password2 = forms.CharField(label = 'Password confirmation', widget = forms.PasswordInput)
-	#licenseValidForm = forms.DateField(label = 'License Validity', widget = forms.DateInput)
+	password1 = forms.CharField(label = 'Password', widget = forms.PasswordInput())
+	password2 = forms.CharField(label = 'Password confirmation', widget = forms.PasswordInput())
+	# licenseValidFrom = forms.DateField(label = 'License Validity', widget=forms.SelectDateWidget())
 
 	class Meta:
 		model  = User
-		fields = ('userName', 'email', 'firstName', 'lastName', 'mobileNumber','driverLicense','licenseValidFrom',)
+		fields = ['userName', 'email', 'firstName', 'lastName', 'mobileNumber','driverLicense','licenseValidFrom']
+		widgets = {
+        	'licenseValidFrom': forms.SelectDateWidget(),
+    	}
 
 	def clean_password2(self):
 		password1 = self.cleaned_data.get('password1')
@@ -36,9 +40,11 @@ class CustUserCreationForm(forms.ModelForm):
 
 class CustUserChangeForm(forms.ModelForm):
 
+	licenseValidForm = forms.DateField(label = 'License Validity', widget=forms.SelectDateWidget())
+
 	class Meta:
 		model  = User
-		fields = ('userName', 'email', 'firstName', 'lastName', 'mobileNumber','driverLicense','licenseValidFrom',)
+		fields = ['userName', 'email', 'firstName', 'lastName', 'mobileNumber','driverLicense','licenseValidFrom']
 
 	def clean_password(self):
 

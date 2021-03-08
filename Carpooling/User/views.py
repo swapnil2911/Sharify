@@ -7,10 +7,13 @@ def UserRegister(request):
 		form = CustUserCreationForm(request.POST)
 		if form.is_valid():
 			form.save()
+			return redirect('/')
 	else:
 		form = CustUserCreationForm()
 	return render(request, 'User/Register.html', {'form':form})
 
+def UserLogin(request):
+	pass
 
 def UserHistory(request):
 	pass
