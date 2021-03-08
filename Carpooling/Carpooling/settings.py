@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'Travels',
 ]
 
+AUTH_USER_MODEL = 'User.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -82,8 +84,8 @@ DATABASES = {
         'NAME': 'Cabify',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': '123',
+        'USER': 'ashueep',
+        'PASSWORD': 'Hello@123',
     }
 }
 # Password validation

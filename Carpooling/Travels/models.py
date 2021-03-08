@@ -10,6 +10,14 @@ class Ride(models.Model):
 	createdOn         = models.DateField()
 	startDate         = models.DateField()
 	endDate           = models.DateField()
+
+	def concat(self):
+		details = self.startingPoint + "-" + self.endingPoint
+		return details
+		
+
+	def __str__(self):
+		return self.concat()
 	
 
 class RequestStatus(models.Model):
@@ -23,5 +31,9 @@ class RideRequest(models.Model):
 	rideId            = models.ForeignKey(Ride, on_delete = models.CASCADE)
 	createdOn         = models.DateField()
 	requestStatusID   = models.ForeignKey(RequestStatus, on_delete = models.CASCADE)
+
+	def __str__(self):
+		return self.riderId.userName + "-" + self.rideId.concat()
+	
 
 	
