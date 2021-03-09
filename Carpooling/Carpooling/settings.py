@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'Carpooling.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Cabify',
+        'NAME': 'cabify',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'USER': 'ashueep',
-        'PASSWORD': 'Hello@123',
+        'USER': 'swapnil2911',
+        'PASSWORD': '12345',
     }
 }
 # Password validation
@@ -125,3 +125,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
