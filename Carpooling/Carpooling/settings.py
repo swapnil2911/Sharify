@@ -84,8 +84,8 @@ DATABASES = {
         'NAME': 'cabify',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'USER': 'swapnil2911',
-        'PASSWORD': '12345',
+        'USER': 'root',
+        'PASSWORD': '123',
     }
 }
 # Password validation
