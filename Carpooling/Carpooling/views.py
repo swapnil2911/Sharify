@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 def HomePage(request):
 	context = {'title' : 'Home'}
-	return render(request,'Home.html',context)
+	return render(request,'User/Home.html',context)
 
 def UserLogin(request):
 	pass

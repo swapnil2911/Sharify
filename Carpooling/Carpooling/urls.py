@@ -18,11 +18,13 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from .views import *
 from User.views import *
+from Travels.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',HomePage,name='home'),
     path('login/', auth_views.LoginView.as_view(template_name='User/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('Registeration/',UserRegister,name='signup'),
+    path('user/',include('User.urls')),
+    path('Create-Ride/',CreateRide),
 ]

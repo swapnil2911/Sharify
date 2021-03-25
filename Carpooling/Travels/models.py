@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from User.models import User,UserCar
 
 # Create your models here.
@@ -7,7 +8,7 @@ class Ride(models.Model):
 	driver            = models.ForeignKey(UserCar, default = None, on_delete = models.CASCADE, related_name = 'Driver_type')
 	endingPoint       = models.CharField(max_length = 25, default = 1)
 	price             = models.IntegerField(default = 1)
-	createdOn         = models.DateField()
+	createdOn         = models.DateField(default = timezone.now)
 	startDate         = models.DateField()
 	endDate           = models.DateField()
 
