@@ -1,0 +1,19 @@
+{% extends "User/Base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        {% comment %} <img class="rounded-circle account-img" src="{{ user.profile.image.url }}"> {% endcomment %}
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.userName }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+          <p class="text-secondary">{{ user.firstName }}</p>
+          <p class="text-secondary">{{ user.mobileNumber }}</p>
+          {% if user.driversLicense %}
+          <p class="text-secondary">{{ user.driversLicense }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <!-- FORM HERE -->
+    </div>
+{% endblock content %}

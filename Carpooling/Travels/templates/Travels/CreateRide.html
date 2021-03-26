@@ -1,1 +1,14 @@
-Create Ride
+{% extends 'User/Base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <form method = "POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend>
+                Create Ride 
+            </legend>
+            {{ form.as_p }}
+        </fieldset>
+        <button type = "Submit"> Create Ride </button>
+    </form>
+{% endblock content %}

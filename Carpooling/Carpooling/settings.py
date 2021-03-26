@@ -25,7 +25,7 @@ SECRET_KEY = '3d4ioqfp%!k7#%jdtz@q3xtw%bfqn2$-6v-w*!(u%9sdw$$^m#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'User',
     'Travels',
+    'crispy_forms',
 ]
 
 AUTH_USER_MODEL = 'User.User'

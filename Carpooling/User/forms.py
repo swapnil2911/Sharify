@@ -6,7 +6,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from django.contrib.admin.widgets import AdminDateWidget
 
-from .models import User
+from .models import User, UserCar
 
 class CustUserCreationForm(forms.ModelForm):
 
@@ -40,7 +40,7 @@ class CustUserCreationForm(forms.ModelForm):
 
 class CustUserChangeForm(forms.ModelForm):
 
-	licenseValidForm = forms.DateField(label = 'License Validity', widget=forms.SelectDateWidget())
+	# licenseValidForm = forms.DateField(label = 'License Validity', widget=forms.SelectDateWidget())
 
 	class Meta:
 		model  = User
@@ -49,3 +49,8 @@ class CustUserChangeForm(forms.ModelForm):
 	def clean_password(self):
 
 		return self.initial['password']
+
+class UserCarForm(forms.ModelForm):
+	class Meta:
+		model = UserCar
+		fields = ['car', 'carColor', 'carRegisteration', ]
