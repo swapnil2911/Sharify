@@ -15,7 +15,10 @@
 				<div class="card-body">
 					<h3 class="card-title">{{ post.driver }}</h3>
 					<p class="card-text">{{ post.concat }}</p>
-					<a href="#" class="btn btn-primary">Accept</a>
+					<form action="/travel/Request-Ride/" method="POST">
+						{% csrf_token %}
+						<button type="submit" class="btn btn-primary" onclick="/travel/Request-Ride/" name='rideId' value="{{ ride.id }}">Request</button>
+					</form>
 				</div>
 			</div>
 		{% endfor %}
