@@ -29,12 +29,16 @@
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
               <a class="nav-item nav-link" href="#">About</a>
+              <form action= "/user/search/" method=get class="form">
+                <input class="search-bar" type="text" name = "q" placeholder="Search .." />
+                <input type="submit" value="search" />
+              </form>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if user.is_authenticated %}
+                {% comment %} <a class="nav-item nav-link" href="#">Notifications</a> {% endcomment %}
                 <a class="nav-item nav-link" href="/travel/Create-Ride/">Create Ride</a>
-                <a class="nav-item nav-link" href="#">Request Ride</a>
                 <a class="nav-item nav-link" href="/user/Profile/">Profile</a>
                 <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
               {% else %}

@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import CustUserCreationForm, CustUserChangeForm, UserCarForm
 from django.contrib.auth import login, authenticate
-
+from .models import UserCar
+from Travels.models import Ride
+from django.db.models import Q
 # Create your views here.
 def UserRegister(request):
 	if request.method == 'POST':
@@ -42,6 +44,26 @@ def AddCar(request):
 def UserHistory(request):
 	pass
 
+def UserRide(request):
+	user = request.user
+	driver = UserCar.objects.filter(driver=user)[0]
+	rides = Ride.objects.filter(driver=driver)
+	return render(request, 'Travels/Notification.html', {'rides': rides})
+
 def UserProfile(request):
 	user = request.user
-	return render(request,'User/Profile.html',{'user':user})
+	driver = UserCar.objects.filter(driver=user)
+	if driver.exists():
+		ride = Ride.objects.filter(driver=driver[0])
+	else:	
+		return render(request,'User/Profile.html', {'user' : user})
+	return render(request,'User/Profile.html',{'user':user, 'rides' : ride})
+
+def Search(request):
+	if request.method=='GET':
+		q = request.GET.get('q')
+		driver = UserCar.objects.filter(driver = request.user)[0]
+		posts = Ride.objects.filter(startingPoint__icontains=q).exclude(driver=driver)
+		return render(request, 'User/Home.html',{'posts': posts, 'query': q})
+	else:
+		return HttpResponse('Please submit a search term.')

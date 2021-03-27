@@ -7,3 +7,9 @@ class RideForm(ModelForm):
     class Meta:
         model = Ride 
         fields = ("startingPoint","endingPoint","price","startDate","endDate")
+
+class RequestForm(ModelForm):
+
+    class Meta:
+        model = RideRequest
+        fields = ('rideId',)

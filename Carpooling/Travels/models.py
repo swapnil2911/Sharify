@@ -30,7 +30,7 @@ class RequestStatus(models.Model):
 class RideRequest(models.Model):
 	riderId           = models.ForeignKey(User, on_delete = models.CASCADE)
 	rideId            = models.ForeignKey(Ride, on_delete = models.CASCADE)
-	createdOn         = models.DateField()
+	createdOn         = models.DateField(default = timezone.now)
 	requestStatusID   = models.ForeignKey(RequestStatus, on_delete = models.CASCADE)
 
 	def __str__(self):

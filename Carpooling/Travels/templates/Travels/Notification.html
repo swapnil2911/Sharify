@@ -5,13 +5,8 @@
       <div class="media">
         {% comment %} <img class="rounded-circle account-img" src="{{ user.profile.image.url }}"> {% endcomment %}
         <div class="media-body">
-          <h2 class="account-heading">{{ user.userName }}</h2>
-          <p class="text-secondary">{{ user.email }}</p>
-          <p class="text-secondary">{{ user.firstName }}</p>
-          <p class="text-secondary">{{ user.mobileNumber }}</p>
-          {% comment %} {% if user.driversLicense == True %} {% endcomment %}
-            <h2>Your Rides</h2>
-            {% for ride in rides %}
+        {% for ride in rides %}
+            <h2 class="account-heading">{{ ride.driver }}</h2>
             <p class="text-secondary">{{ ride.createdOn }}</p>
             <p class="text-secondary">{{ ride.startingPoint }}</p>
             <p class="text-secondary">{{ ride.endingPoint }}</p>
@@ -20,8 +15,7 @@
             {% if user.driversLicense %}
             <p class="text-secondary">{{  }}</p>
             {% endif %} {% endcomment %}
-            {% endfor %}
-          {% comment %} {% endif %} {% endcomment %}
+        {% endfor %}
         </div>
       </div>
       <!-- FORM HERE -->

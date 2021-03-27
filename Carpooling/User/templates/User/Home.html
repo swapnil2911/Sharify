@@ -6,10 +6,38 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<p>Hi {{ user.userName }}, Welcome to Cabify!</p>
-{% comment %} <p><a href="{% url 'logout' %}">Log Out</a></p> {% endcomment %}
+	<p>Hi {{ user.userName }}, Welcome to Cabify!</p>
+	<p>Rides Available:</p>
+	{% if posts %}
+	<h1>Starting point: </h1>
+		{% for post in posts %}
+			<div class="card card-inverse" style="border-color: #333;">
+				<div class="card-body">
+					<h3 class="card-title">{{ post.driver }}</h3>
+					<p class="card-text">{{ post.concat }}</p>
+					<a href="#" class="btn btn-primary">Accept</a>
+				</div>
+			</div>
+		{% endfor %}
+	{% endif %}
+<div class="container">
+	<div class="card-columns">
+		{% for ride in rides %}
+		<div class="card card-inverse" style="border-color: #333;">
+			<div class="card-body">
+				<h3 class="card-title">{{ ride.driver }}</h3>
+				<p class="card-text">{{ ride.concat }}</p>
+				<form action="/travel/Request-Ride/" method="POST">
+					{% csrf_token %}
+					<button type="submit" class="btn btn-primary" onclick="/travel/Request-Ride/" name='rideId' value="{{ ride.id }}">Request</button>
+				</form>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
 {% else %}
 <p>You are not logged in!</p>
-{% comment %} <a href="{% url 'Registeration' %}">Sign Up</a> {% endcomment %}
 {% endif %}
 {% endblock %}
