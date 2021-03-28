@@ -57,15 +57,19 @@ def UserHistory(request):
 def UserRide(request):
 	user = request.user
 	if(UserCar.objects.filter(driver=request.user)):
-		# cursor = connection.cursor()
-		# cursor.execute("SELECT * from travels_ride where driver_id in (select id from user_usercar where driver_id = %s)",[request.user.id])
-		# rides = dictfetchall(cursor)
-		#print(connection.queries)
-		driver = UserCar.objects.filter(driver=request.user)[0]
-		rides = Ride.objects.filter(driver=driver)
-		riderequests = RideRequest.objects.filter()
-		pending = RequestStatus.objects.filter(pk = 1)[0]
-		return render(request, 'Travels/myRidesDetails.html', {'rides': rides, 'requests': riderequests, 'pending': pending})
+		cursor = connection.cursor()
+		cursor.execute("SELECT * from travels_ride where driver_id in (select id from user_usercar where driver_id = %s)",[request.user.id])
+		rides = dictfetchall(cursor)
+		print(connection.queries)
+		# driver = UserCar.objects.filter(driver=request.user)[0]
+		# rides = Ride.objects.filter(driver=driver)
+		cursor2 = connection.cursor()
+		cursor2.execute("select user_user.userName,travels_riderequest.* from travels_riderequest inner join user_user on travels_riderequest.riderId_id=user_user.id where travels_riderequest.requestStatusId_id=1 and travels_riderequest.rideId_id in (select id from travels_ride where driver_id in (select id from user_usercar where driver_id = %s));",[request.user.id])
+		riderequests = dictfetchall(cursor2)
+		print(connection.queries)
+		# riderequests = RideRequest.objects.filter()
+		# pending = RequestStatus.objects.filter(pk = 1)[0]
+		return render(request, 'Travels/myRidesDetails.html', {'rides': rides, 'requests': riderequests})
 	else:
 		print("No rides to show.")
 		return redirect('/')

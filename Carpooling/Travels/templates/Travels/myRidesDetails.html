@@ -6,20 +6,20 @@
         {% comment %} <img class="rounded-circle account-img" src="{{ user.profile.image.url }}"> {% endcomment %}
         <div class="media-body">
         {% for ride in rides %}
-            <h2 class="account-heading">{{ ride }}</h2>
+            <h2 class="account-heading">{{ ride.startingPoint }}-{{ ride.endingPoint }}</h2>
             <p class="text-secondary">{{ ride.createdOn }}</p>
             
-            {% comment %} <p class="text-secondary">{{  }}</p>
+            {% comment %} <p class="text-secondary"></p>
             {% if user.driversLicense %}
-            <p class="text-secondary">{{  }}</p>
+            <p class="text-secondary"></p>
             {% endif %} {% endcomment %}
             <div class="container">
               <div class="card-columns">
                 {% for req in requests %}
-                {% if req.rideId == ride and req.requestStatusID == pending %}
+                {% if req.rideId_id == ride.id %}
                 <div class="card card-inverse" style="border-color: #333;">
                   <div class="card-body">
-                    <h3 class="card-title">{{ req.riderId }}</h3>
+                    <h3 class="card-title">{{ req.userName }}</h3>
                     <p class="card-text"></p>
                     <form action="/travel/Request-accept/" method="POST">
                       {% csrf_token %}
@@ -32,7 +32,6 @@
                     </form>
                   </div>
                 </div>
-                {% else %}
                 {% endif %}
                 {% endfor %}
               </div>
