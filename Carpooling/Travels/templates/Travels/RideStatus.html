@@ -1,0 +1,17 @@
+{% extends 'User/Base.html' %}
+{% block content %}
+<h2>Your Requests:</h2>
+<hr>
+<div class="container">
+	<div class="card-columns">
+		{% for rides in rider %}
+		<div class="card card-inverse" style="border-color: #333;">
+			<div class="card-body">
+				<h3 class="card-title">{{ rides.rideId }}</h3>
+				<p class="card-text">{{ rides.requestStatusID }}</p>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

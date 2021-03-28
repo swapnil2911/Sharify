@@ -2,9 +2,19 @@ from django.shortcuts import render, redirect
 from .forms import CustUserCreationForm, CustUserChangeForm, UserCarForm
 from django.contrib.auth import login, authenticate
 from .models import UserCar
-from Travels.models import Ride
+from Travels.models import Ride, RideRequest, RequestStatus
 from django.db.models import Q
+from django.db import connection
+
 # Create your views here.
+
+def dictfetchall(cursor): 
+    desc = cursor.description 
+    return [
+            dict(zip([col[0] for col in desc], row)) 
+            for row in cursor.fetchall() 
+    ]
+
 def UserRegister(request):
 	if request.method == 'POST':
 		form = CustUserCreationForm(request.POST)
@@ -47,12 +57,19 @@ def UserHistory(request):
 def UserRide(request):
 	user = request.user
 	if(UserCar.objects.filter(driver=request.user)):
+		# cursor = connection.cursor()
+		# cursor.execute("SELECT * from travels_ride where driver_id in (select id from user_usercar where driver_id = %s)",[request.user.id])
+		# rides = dictfetchall(cursor)
+		#print(connection.queries)
 		driver = UserCar.objects.filter(driver=request.user)[0]
 		rides = Ride.objects.filter(driver=driver)
-		return render(request, 'Travels/Notification.html', {'rides': rides})
+		riderequests = RideRequest.objects.filter()
+		pending = RequestStatus.objects.filter(pk = 1)[0]
+		return render(request, 'Travels/myRidesDetails.html', {'rides': rides, 'requests': riderequests, 'pending': pending})
 	else:
 		print("No rides to show.")
 		return redirect('/')
+
 def UserProfile(request):
 	user = request.user
 	driver = UserCar.objects.filter(driver=user)
@@ -65,8 +82,11 @@ def UserProfile(request):
 def Search(request):
 	if request.method=='GET':
 		q = request.GET.get('q')
-		driver = UserCar.objects.filter(driver = request.user)[0]
-		posts = Ride.objects.filter(startingPoint__icontains=q).exclude(driver=driver)
+		if(UserCar.objects.filter(driver=request.user)):
+			driver = UserCar.objects.filter(driver = request.user)[0]
+			posts = Ride.objects.filter(startingPoint__icontains=q).exclude(driver=driver)
+		else:
+			posts = Ride.objects.filter(startingPoint__icontains=q)
 		return render(request, 'User/Home.html',{'posts': posts, 'query': q})
 	else:
 		return HttpResponse('Please submit a search term.')

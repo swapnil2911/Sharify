@@ -20,6 +20,7 @@ def CreateRide(request):
                 return redirect('/')
             instance.driver = driver[0]
             instance.save()
+            return redirect('/')
     else:
         form = RideForm()
     return render(request, 'Travels/CreateRide.html',{'form' : form})
@@ -28,12 +29,37 @@ def RideRequest_v(request):
     id1 = request.POST.get("rideId")
     ride1 = Ride.objects.filter(id = id1)[0]
     rider1 = request.user
-    print(rider1)
+    # print(rider1)
     if request.method == "POST":
         r = RideRequest(riderId = rider1, rideId = ride1, requestStatusID = RequestStatus.objects.filter(pk = 1)[0])
         r.save()
         return redirect('/')
-            
+
+def CheckStatus(request):
+    user = request.user
+    rider = RideRequest.objects.filter(riderId = user)
+    return render(request, 'Travels/RideStatus.html',{'rider' : rider})
+
+def RequestAccept(request):
+    request_id = request.POST.get("reqId")
+    req = RideRequest.objects.filter(id = request_id)[0]
+    if request.method == "POST":
+        req.requestStatusID = RequestStatus.objects.filter(pk = 2)[0]
+        print("Accepted")
+        req.save()
+        return redirect('/')
+    pass
+
+def RequestReject(request):
+    request_id = request.POST.get("reqId")
+    req = RideRequest.objects.filter(id = request_id)[0]
+    if request.method == "POST":
+        req.requestStatusID = RequestStatus.objects.filter(pk = 3)[0]
+        print("Rejected")
+        req.save()
+        return redirect('/')
+    pass
+
 def Notification(request):
     pass
 
