@@ -46,10 +46,13 @@ def UserHistory(request):
 
 def UserRide(request):
 	user = request.user
-	driver = UserCar.objects.filter(driver=user)[0]
-	rides = Ride.objects.filter(driver=driver)
-	return render(request, 'Travels/Notification.html', {'rides': rides})
-
+	if(UserCar.objects.filter(driver=request.user)):
+		driver = UserCar.objects.filter(driver=request.user)[0]
+		rides = Ride.objects.filter(driver=driver)
+		return render(request, 'Travels/Notification.html', {'rides': rides})
+	else:
+		print("No rides to show.")
+		return redirect('/')
 def UserProfile(request):
 	user = request.user
 	driver = UserCar.objects.filter(driver=user)
