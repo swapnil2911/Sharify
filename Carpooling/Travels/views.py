@@ -6,24 +6,40 @@ from User.models import User, UserCar
 from django.db import connection
 from django.db.models import Q
 import xml.etree.ElementTree as ET
+from django.contrib import messages
 
-# Create your views here.
-# def CreateRide(request):
-#     if request.method == 'POST':
-#         form = RideForm(request.POST)
-#         if form.is_valid():
-#             instance = form.save(commit = False)
-#             # driver = UserCar.objects.raw(f"SELECT * FROM user_usercar WHERE driver_id IN (SELECT id FROM user_user WHERE userName = {request.user})")
-#             driver = UserCar.objects.filter(driver = request.user)
-#             print(driver)
-#             if not driver.exists():
-#                 return redirect('/')
-#             instance.driver = driver[0]
-#             instance.save()
-#             return redirect('/')
-#     else:
-#         form = RideForm()
-#     return render(request, 'Travels/CreateRide.html',{'form' : form})
+def CheckRideClash(user, startDate, endDate):
+    driver = UserCar.objects.filter(driver = user)
+    userPassenger = Ride.objects.filter(riderequest__riderId = user).filter(~Q(riderequest__requestStatusID = 3))
+    if driver.exists(): 
+        userDriver = Ride.objects.filter(driver = driver[0])
+    # userPassenger = Ride.objects.filter(riderequest__riderId = user).filter(~Q(riderequest__requestStatusID = 3))
+        userRides = (userDriver | userPassenger)
+    else:
+        userRides = userPassenger
+    if userRides.exists():
+        # startDate = instance.startDate
+        # print(request.POST)
+        # endDate = instance.endDate
+        for userRide in userRides:
+            if (userRide.startDate < startDate and userRide.endDate > startDate and userRide.endDate < endDate):
+                # messages.warning(request, 'Ride NOT created! This ride clashes with your previous ride(s)')
+                print('1')
+                print(userRide)
+                return 1
+            if (userRide.startDate > startDate and userRide.endDate < endDate):
+                # messages.warning(request, 'Ride NOT created! This ride clashes with your previous ride(s)')
+                print('2')
+                print(userRide)
+                return 2
+            if (userRide.startDate > startDate and userRide.startDate < endDate):
+                # messages.warning(request, 'Ride NOT created! This ride clashes with your previous ride(s)')
+                print('3')
+                print(userRide)
+                return 3
+    
+    return 4
+
 
 def CreateRide(request):
     driver = UserCar.objects.filter(driver = request.user)
@@ -33,8 +49,13 @@ def CreateRide(request):
         form = RideForm(request.POST)
         if form.is_valid():
             instance = form.save(commit = False)
+            x = CheckRideClash(request.user, instance.startDate, instance.endDate)
+            if x == 1 or x == 2 or x == 3:
+                messages.warning(request, 'Ride NOT created! This ride clashes with your previous ride(s)')
+                return redirect('/')
             instance.driver = driver[0]
             instance.save()
+            messages.success(request, f'Ride from {instance.startingPoint} to {instance.endingPoint} created successfully')
             return redirect('/')
     else:
         form = RideForm()
@@ -47,7 +68,12 @@ def RideRequest_v(request):
     # print(rider1)
     if request.method == "POST":
         r = RideRequest(riderId = rider1, rideId = ride1, requestStatusID = RequestStatus.objects.filter(pk = 1)[0])
+        x = CheckRideClash(request.user, r.rideId.startDate, r.rideId.endDate)
+        if x == 1 or x == 2 or x == 3:
+            messages.warning(request, 'Ride NOT requested! This ride clashes with your previous ride(s)')
+            return redirect('/')
         r.save()
+        messages.success(request, f'Ride successfully requested to driver {ride1.driver.driver.userName}! Current status : PENDING.')
         return redirect('/')
 
 def CheckStatus(request):
@@ -61,6 +87,7 @@ def RequestAccept(request):
     if request.method == "POST":
         req.requestStatusID = RequestStatus.objects.filter(pk = 2)[0]
         print("Accepted")
+        messages.success(request, f'Ride successfully accepted with {req.riderId.userName}!')
         req.save()
         return redirect('/')
     pass
@@ -71,11 +98,9 @@ def RequestReject(request):
     if request.method == "POST":
         req.requestStatusID = RequestStatus.objects.filter(pk = 3)[0]
         print("Rejected")
+        messages.success(request, f'Ride successfully rejected with {req.riderId.userName}!')
         req.save()
         return redirect('/')
-    pass
-
-def Notification(request):
     pass
 
 def dictfetchall(cursor): 

@@ -5,6 +5,7 @@ from .models import UserCar
 from Travels.models import Ride, RideRequest, RequestStatus
 from django.db.models import Q
 from django.db import connection
+from django.contrib import messages
 
 # Create your views here.
 
@@ -27,13 +28,11 @@ def UserRegister(request):
 			if user.driverLicense is not None or user.licenseValidFrom is not None:
 				print('Has drivers license')
 				return redirect('/user/Add-Car')
+			messages.success(request, f'Account for user {user.userName} created successfully!')
 			return redirect('/')
 	else:
 		form = CustUserCreationForm()
 	return render(request, 'User/Register.html', {'form':form})
-
-def UserLogin(request):
-	pass
 
 def AddCar(request):
 	driver = request.user
@@ -50,9 +49,6 @@ def AddCar(request):
 		form = UserCarForm()
 	
 	return render(request, 'User/Driver.html', {'form' : form})
-
-def UserHistory(request):
-	pass
 
 def UserRide(request):
 	user = request.user
@@ -102,9 +98,9 @@ def Search(request):
 		q = request.GET.get('q')
 		if(UserCar.objects.filter(driver=request.user)):
 			driver = UserCar.objects.filter(driver = request.user)[0]
-			posts = Ride.objects.filter(startingPoint__icontains=q).exclude(driver=driver)
+			rides = Ride.objects.filter(startingPoint__icontains=q).exclude(driver=driver)
 		else:
-			posts = Ride.objects.filter(startingPoint__icontains=q)
-		return render(request, 'User/Home.html',{'posts': posts, 'query': q})
+			rides = Ride.objects.filter(startingPoint__icontains=q)
+		return render(request, 'User/Home.html',{'rides': rides, 'query': q})
 	else:
 		return HttpResponse('Please submit a search term.')
