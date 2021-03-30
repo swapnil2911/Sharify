@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CustUserCreationForm, CustUserChangeForm, UserCarForm
+from .forms import CustUserCreationForm, CustUserChangeForm, UserCarForm, LicenseForm
 from django.contrib.auth import login, authenticate
 from .models import UserCar
 from Travels.models import Ride, RideRequest, RequestStatus
@@ -73,6 +73,20 @@ def UserRide(request):
 	else:
 		print("No rides to show.")
 		return redirect('/')
+
+def AddLicense(request):
+	user = request.user
+	if request.method == 'POST':
+		form = LicenseForm(request.POST)
+		if form.is_valid():
+			instance = form.save(commit = False)
+			user.driverLicense = instance.driverLicense
+			user.licenseValidFrom = instance.licenseValidFrom
+			user.save()
+			return redirect('/user/Add-Car')
+	else:
+		form = LicenseForm()
+	return render(request, 'User/licensedeets.html', {'form':form})
 
 def UserProfile(request):
 	user = request.user

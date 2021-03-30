@@ -54,3 +54,8 @@ class UserCarForm(forms.ModelForm):
 	class Meta:
 		model = UserCar
 		fields = ['car', 'carColor', 'carRegisteration', ]
+
+class LicenseForm(forms.ModelForm):
+	class Meta:
+		model = User
+		fields = ['driverLicense','licenseValidFrom']

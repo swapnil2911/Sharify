@@ -8,16 +8,31 @@ from django.db.models import Q
 import xml.etree.ElementTree as ET
 
 # Create your views here.
+# def CreateRide(request):
+#     if request.method == 'POST':
+#         form = RideForm(request.POST)
+#         if form.is_valid():
+#             instance = form.save(commit = False)
+#             # driver = UserCar.objects.raw(f"SELECT * FROM user_usercar WHERE driver_id IN (SELECT id FROM user_user WHERE userName = {request.user})")
+#             driver = UserCar.objects.filter(driver = request.user)
+#             print(driver)
+#             if not driver.exists():
+#                 return redirect('/')
+#             instance.driver = driver[0]
+#             instance.save()
+#             return redirect('/')
+#     else:
+#         form = RideForm()
+#     return render(request, 'Travels/CreateRide.html',{'form' : form})
+
 def CreateRide(request):
+    driver = UserCar.objects.filter(driver = request.user)
+    if not driver.exists():
+        return redirect('/user/Add-License/')
     if request.method == 'POST':
         form = RideForm(request.POST)
         if form.is_valid():
             instance = form.save(commit = False)
-            # driver = UserCar.objects.raw(f"SELECT * FROM user_usercar WHERE driver_id IN (SELECT id FROM user_user WHERE userName = {request.user})")
-            driver = UserCar.objects.filter(driver = request.user)
-            print(driver)
-            if not driver.exists():
-                return redirect('/')
             instance.driver = driver[0]
             instance.save()
             return redirect('/')

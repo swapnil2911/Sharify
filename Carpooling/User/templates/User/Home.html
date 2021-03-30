@@ -7,7 +7,7 @@
 {% block content %}
 {% if user.is_authenticated %}
 	<p>Hi {{ user.userName }}, Welcome to Cabify!</p>
-	<p>Rides Available:</p>
+	<p>Rides Available to Request:</p>
 	{% if posts %}
 	<h1>Starting point: </h1>
 		{% for post in posts %}
@@ -26,6 +26,7 @@
 <div class="container">
 	<div class="card-columns">
 		{% for ride in rides %}
+		{% if ride.driver != user %}
 		<div class="card card-inverse" style="border-color: #333;">
 			<div class="card-body">
 				<h3 class="card-title">{{ ride.driver }}</h3>
@@ -36,6 +37,17 @@
 				</form>
 			</div>
 		</div>
+		{% endif %}
+		{% comment %} <div class="card card-inverse" style="border-color: #333;">
+			<div class="card-body">
+				<h3 class="card-title">{{ ride.driver }}</h3>
+				<p class="card-text">{{ ride.concat }}</p>
+				<form action="/travel/Request-Ride/" method="POST">
+					{% csrf_token %}
+					<button type="submit" class="btn btn-primary" onclick="/travel/Request-Ride/" name='rideId' value="{{ ride.id }}">Request</button>
+				</form>
+			</div>
+		</div> {% endcomment %}
 		{% endfor %}
 	</div>
 </div>
