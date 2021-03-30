@@ -49,10 +49,13 @@
 		</div>
 		</div>
 		<br>
+		{% empty %}
+		No results are available.
 		{% endfor %}
 </div>
 
 {% else %}
-<p>You are not logged in!</p>
+<p> Hi, Welcome to Cabify! <br>
+- Please login/Register to go ahead</p>
 {% endif %}
 {% endblock %}

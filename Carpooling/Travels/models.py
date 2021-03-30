@@ -6,8 +6,8 @@ from User.models import User,UserCar
 class Ride(models.Model):
 	startingPoint     = models.CharField(max_length = 25)
 	driver            = models.ForeignKey(UserCar, default = None, on_delete = models.CASCADE, related_name = 'Driver_type')
-	endingPoint       = models.CharField(max_length = 25, default = 1)
-	price             = models.IntegerField(default = 1)
+	endingPoint       = models.CharField(max_length = 25)
+	price             = models.IntegerField()
 	createdOn         = models.DateField(default = timezone.now)
 	startDate         = models.DateField()
 	endDate           = models.DateField()

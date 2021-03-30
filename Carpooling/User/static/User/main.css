@@ -2,6 +2,7 @@ body {
   background: #fafafa;
   color: #333333;
   margin-top: 5rem;
+  margin-bottom: 120px;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Sarpanch:wght@400&display=swap');
@@ -16,6 +17,18 @@ ul {
 
 .bg-steel {
   background-color: #5f788a;
+}
+
+.color-text{
+  color: #cbd5db !important;
+}
+
+.color1-text{
+  color: white !important;
+}
+
+.color1-text:hover{
+  color:#cbd5db !important;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -83,4 +96,14 @@ a.article-title:hover {
 
 .account-heading {
   font-size: 2.5rem;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
 }

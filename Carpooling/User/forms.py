@@ -59,3 +59,6 @@ class LicenseForm(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = ['driverLicense','licenseValidFrom']
+		widgets = {
+        	'licenseValidFrom': forms.SelectDateWidget(),
+    	}

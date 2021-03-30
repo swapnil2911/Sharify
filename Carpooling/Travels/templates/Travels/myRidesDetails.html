@@ -8,7 +8,7 @@
         {% for ride in rides %}
             <h2 class="account-heading">{{ ride.startingPoint }}-{{ ride.endingPoint }}</h2>
             <p class="text-secondary">{{ ride.createdOn }}</p>
-            
+
             {% comment %} <p class="text-secondary"></p>
             {% if user.driversLicense %}
             <p class="text-secondary"></p>
@@ -34,6 +34,7 @@
                 </div>
                 {% endif %}
                 {% endfor %}
+                <hr style="height:2px; border-width:0; color:#CAD8E1; background-color:#CAD8E1">             
               </div>
             </div>
         {% endfor %}

@@ -6,7 +6,7 @@ from Travels.models import Ride, RideRequest, RequestStatus
 from django.db.models import Q
 from django.db import connection
 from django.contrib import messages
-
+from django.utils import timezone
 # Create your views here.
 
 def dictfetchall(cursor): 
@@ -86,22 +86,43 @@ def AddLicense(request):
 
 def UserProfile(request):
 	user = request.user
-	driver = UserCar.objects.filter(driver=user)
-	if driver.exists():
-		ride = Ride.objects.filter(driver=driver[0])
+	if(UserCar.objects.filter(driver=request.user)):
+		cursor = connection.cursor()
+		cursor.execute("SELECT * from travels_ride where driver_id in (select id from user_usercar where driver_id = %s)",[request.user.id])
+		userRide = dictfetchall(cursor)
+		userPassenger = Ride.objects.filter(riderequest__riderId = user).filter(riderequest__requestStatusID__description = 'Accepted')
+		userPassengerPend = Ride.objects.filter(riderequest__riderId = user).filter(riderequest__requestStatusID__description = 'Pending')
+		Passengers = RideRequest.objects.filter(rideId__driver__driver = user).filter(requestStatusID__description = 'Accepted')
+	# driver = UserCar.objects.filter(driver=user)
+	# if driver.exists():
+	# 	ride = Ride.objects.filter(driver=driver[0])
 	else:	
 		return render(request,'User/Profile.html', {'user' : user})
-	return render(request,'User/Profile.html',{'user':user, 'rides' : ride})
+	return render(request,'User/Profile.html',{'user':user, 'rides' : userRide, 'userPassengers' : userPassenger,  'Passengers' : Passengers, 'userPassengersPend' : userPassengerPend})
+
+# ride = Ride.objects.filter(
+# 			~Q(driver__driver = user)).filter(
+# 			~Q(riderequest__riderId = user)).filter(
+# 			startDate__gte=timezone.now())
 
 def Search(request):
+	user = request.user
 	if request.method=='GET':
 		q = request.GET.get('q')
 		p = request.GET.get('p')
 		if(UserCar.objects.filter(driver=request.user)):
 			driver = UserCar.objects.filter(driver = request.user)[0]
-			rides = Ride.objects.filter(startingPoint__icontains=q,endingPoint__icontains=p).exclude(driver=driver)
+			rides = Ride.objects.filter(startingPoint__icontains=q,endingPoint__icontains=p).filter(
+			~Q(driver__driver = user)).filter(
+			~Q(riderequest__riderId = user)).filter(
+			startDate__gte=timezone.now())
 		else:
-			rides = Ride.objects.filter(startingPoint__icontains=q,endingPoint__icontains=p)
+			rides = Ride.objects.filter(startingPoint__icontains=q,endingPoint__icontains=p).filter(
+			~Q(riderequest__riderId = user)).filter(
+			startDate__gte=timezone.now())
 		return render(request, 'User/Home.html',{'rides': rides, 'q': q, 'p':p})
 	else:
 		return HttpResponse('Please submit a search term.')
+
+def About(request):
+	return render(request,'User/About.html')
