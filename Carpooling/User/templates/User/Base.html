@@ -29,8 +29,9 @@
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
               <a class="nav-item nav-link" href="#">About</a>
-              <form action= "/user/search/" method=get class="form">
-                <input class="search-bar" type="text" name = "q" placeholder="Search .." />
+              <form action= "/user/search/" method=get class="form" style="padding-left: 20%;">
+                <input type="text" name = "q" style="width: 30%;" placeholder="Starting.. " />
+                <input type="text" name = "p" style="width: 30%;" placeholder="Ending.." />
                 <input type="submit" value="search" />
               </form>
             </div>
@@ -61,7 +62,7 @@
           {% block content %}{% endblock %}
         </div>
         <div class="col-md-4">
-          <div class="content-section">
+          <div class="content-section" style="position: fixed; border: 50%;">
             <h3>Manage Rides</h3>
             <p class='text-muted'>You can Manage your rides here
               <ul class="list-group">

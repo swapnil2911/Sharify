@@ -96,11 +96,12 @@ def UserProfile(request):
 def Search(request):
 	if request.method=='GET':
 		q = request.GET.get('q')
+		p = request.GET.get('p')
 		if(UserCar.objects.filter(driver=request.user)):
 			driver = UserCar.objects.filter(driver = request.user)[0]
-			rides = Ride.objects.filter(startingPoint__icontains=q).exclude(driver=driver)
+			rides = Ride.objects.filter(startingPoint__icontains=q,endingPoint__icontains=p).exclude(driver=driver)
 		else:
-			rides = Ride.objects.filter(startingPoint__icontains=q)
-		return render(request, 'User/Home.html',{'rides': rides, 'query': q})
+			rides = Ride.objects.filter(startingPoint__icontains=q,endingPoint__icontains=p)
+		return render(request, 'User/Home.html',{'rides': rides, 'q': q, 'p':p})
 	else:
 		return HttpResponse('Please submit a search term.')
