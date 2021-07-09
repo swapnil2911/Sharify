@@ -9,11 +9,11 @@ This is a Web-Application built using Django framework and MySQL Database with H
 
 
 ## Steps to host :
-Make a New Folder named `Sharify`
+Make a New Folder named `Cabify`
 Then run the following commands to your terminal
 ```
-git clone https://github.com/swapnil2911/Sharify.git
-cd Sharify
+git clone https://github.com/swapnil2911/Cabify.git
+cd Cabify
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
