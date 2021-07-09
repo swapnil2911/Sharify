@@ -3,17 +3,17 @@
 This is a Web-Application built using Django framework and MySQL Database with HTML/CSS + Bootstrap front end for the CS254 DataBase Systems Lab Course (Mini-Project).
 
 ## Team members:
-1. Mudit Singhal
-2. Swapnil Guduru
+1. Swapnil Guduru
+2. Mudit Singhal 
 3. Ashutosh Anand
 
 
 ## Steps to host :
-Make a New Folder named `DBMS_Project`
+Make a New Folder named `Sharify`
 Then run the following commands to your terminal
 ```
-git clone https://github.com/muditsinghal/DBMS-Project.git
-cd DBMS-Project
+git clone https://github.com/swapnil2911/Sharify.git
+cd Sharify
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
